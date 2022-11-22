@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.13.1/cr-1.6.1/datatables.min.js"></script>
+<head>
+    <body>
+        <div class="container">
+            <h1>TEST</h1>
+        </div>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <table id="example" tabindex="1" class="table"></table>
+                </div>
+            </div>
+        </div>
+    </body>
+</head>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.13.1/cr-1.6.1/datatables.min.css" />
+
+<script type="text/javascript">
+    var dataSet = [
+            ["Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011", "$320,800", "Edinburgh", "42", "/data/eng/bec/fit/bags", "Sales", "500", "52", "asdsadasdsa@goo.com"]
+        ];
+
+        //
+        var dataSet = [
+            ['Tiger Nixon', 'System Architect', 'Edinburgh', 'som/project/Very_Lengthy_string/Must/be/in----------One/Line/data', '5421', '2011', '$320,800', 'Edinburgh', '42', '/data/eng/bec/fit/bags', 'Sales', '500', '52', 'asdsadasdsa@goo.com']
+        ];
+        //
+        $(document).ready(function () {
+            //
+            var table = $('#example').DataTable({
+                data: dataSet,
+                colReorder: true,
+                'scrollX': '100%',
+                columns: [{
+                    title: 'Name'
+                }, {
+                    title: 'Position'
+                }, {
+                    title: 'Offc'
+                }, {
+                    title: 'Project'
+                }, {
+                    title: 'Ext'
+                }, {
+                    title: 'Start Date'
+                }, {
+                    title: 'Salary'
+                }, {
+                    title: 'Location'
+                }, {
+                    title: 'working hours'
+                }, {
+                    title: 'last Path'
+                }, {
+                    title: 'Discpline'
+                }, {
+                    title: 'average'
+                }, {
+                    title: 'age'
+                }, {
+                    title: 'email'
+                }]
+            });
+            //
+            var isScrollMove = false;
+            var dataTable = $('#example_wrapper');
+            var scroll = $('.dataTables_scrollBody');
+
+            $('body').on('mousedown', $('thead tr th', dataTable), function () {
+                addMouseMoveEventer();
+            });
+            $('body').on('mouseup', $('thead tr th', dataTable), function () {
+                isScrollMove = false;
+                $('body').off('mousemove');
+            });
+
+            function addMouseMoveEventer() {
+                $('body')
+                    .off('mousemove', scroll)
+                    .on('mousemove', scroll, function (e) {
+                        if (
+                            e.pageX < dataTable.offset().left ||
+                            e.pageX > dataTable.offset().left + dataTable.width()
+                        ) {
+                            isScrollMove = false;
+                        } else {
+                            if (e.pageX - dataTable.offset().left <= 100) {
+                                if (!isScrollMove) {
+                                    isScrollMove = true;
+                                    var moveScrollMoveLeft = () => {
+                                        if (isScrollMove) {
+                                            scroll.scrollLeft(scroll.scrollLeft() - 3);
+                                            setTimeout(() => {
+                                                moveScrollMoveLeft();
+                                            }, 1);
+                                        }
+                                    };
+                                    moveScrollMoveLeft();
+                                }
+                            } else if (
+                                dataTable.offset().left + dataTable.width() - e.pageX <=
+                                100
+                            ) {
+                                if (!isScrollMove) {
+                                    isScrollMove = true;
+                                    var moveScrollMoveRight = () => {
+                                        if (isScrollMove) {
+                                            scroll.scrollLeft(scroll.scrollLeft() + 3);
+                                            setTimeout(() => {
+                                                moveScrollMoveRight();
+                                            }, 1);
+                                        }
+                                    };
+                                    moveScrollMoveRight();
+                                }
+                            } else {
+                                isScrollMove = false;
+                            }
+                        }
+                    });
+            }
+
+            //
+        });
+
+</script>
